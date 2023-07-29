@@ -1,3 +1,4 @@
 backend/build/database/data
+backend/*.env
 backend/src
 frontend/src
