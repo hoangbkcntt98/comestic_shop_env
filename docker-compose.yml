@@ -14,8 +14,6 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
     ports:
       - 5173:5173
-    depends_on:
-      - local_composer
   webserver:
     image: nginx
     container_name: webserver
@@ -26,7 +24,6 @@ services:
       - 80:80
     depends_on:
       - backend
-      - local_composer
   database:
     image: mysql:8.0
     container_name: database
@@ -59,16 +56,3 @@ services:
       - ${FRONTEND_SOURCE_DIR}/${APP_NAME}/public:/app/public
     ports:
       - "3000:3000"
-  local_composer:
-    container_name: local_composer
-    working_dir: /tmp
-    build:
-      context: ${BACKEND_ENV_DIR}/composer
-      dockerfile: composer.dockerfile
-    environment:
-      - APP_NAME=${APP_NAME}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-    volumes:
-      - ${BACKEND_SOURCE_DIR}:/var/www/html
-      - ${BACKEND_ENV_DIR}/composer/create_project.sh:/tmp/create_project.sh
